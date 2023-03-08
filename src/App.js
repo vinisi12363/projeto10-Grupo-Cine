@@ -8,6 +8,7 @@ import { BrowserRouter ,Route, Routes } from "react-router-dom"
 
 export default function App() {
     const [filmId , setFilmId] = useState ([])
+    const [filmes, setFilmes] = useState ([]);
     return (
         <BrowserRouter>
            <NavContainer>CINEFLEX</NavContainer>
@@ -16,16 +17,19 @@ export default function App() {
             <Route path ="/" element= { <HomePage 
                 filmId = {filmId}
                 setFilmId= {setFilmId}
+                filmes={filmes}
+                setFilmes={setFilmes}
              /> 
             }/>
 
-            <Route path="assentos" element= {
+            <Route path="/assentos" element= {
                 <SeatsPage
                     filmId ={filmId} 
+                    filmes={filmes}
                 /> 
              }/>
-            <Route path="sessao" element={<SessionsPage />} />
-            <Route path="sucessRequire" element={<SuccessPage />} />
+            <Route path="/sessao" element={<SessionsPage />} />
+            <Route path="/sucessRequire" element={<SuccessPage />} />
 
             </Routes>
             

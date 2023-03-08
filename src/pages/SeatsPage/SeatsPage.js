@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
 
-export default function SeatsPage({filmId}) {
-    console.log("filme id vale:", filmId)
+export default function SeatsPage({filmId, filmes}) {
+    
     const [seats, setSeats] = useState ([])
     useEffect (()=>{
         const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${filmId}/seats`)  
@@ -23,20 +23,32 @@ export default function SeatsPage({filmId}) {
 
 
 
-    }, [filmId])
+    }, [])
 
+    if (seats.length === 0) {
+        return <div>Carregando....</div>
+    }
     return (
         <PageContainer>
             Selecione o(s) assento(s)
-            
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
-            </SeatsContainer>
+        
+               {
+                    
+                     seats.seats.map( s => (
+                         <SeatItem key={s.id}>{s.name}</SeatItem>
+                   )
+                    )
+                    
 
+
+               } 
+                 
+                
+             </SeatsContainer> 
+            
+                 
+       
             <CaptionContainer>
                 <CaptionItem>
                     <CaptionCircle />
@@ -71,9 +83,10 @@ export default function SeatsPage({filmId}) {
                     <p>Sexta - 14h00</p>
                 </div>
             </FooterContainer>
-
+        
         </PageContainer>
     )
+    
 }
 
 const PageContainer = styled.div`

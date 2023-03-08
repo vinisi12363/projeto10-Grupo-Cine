@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
 import { Link } from "react-router-dom";
-export default function HomePage({filmId, setFilmId}) {
-    const [filmes, setFilmes] = useState ([]);
+export default function HomePage({filmId, setFilmId, filmes, setFilmes}) {
+   
     
     useEffect (() => {
         const require = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies") 
@@ -40,7 +40,10 @@ export default function HomePage({filmId, setFilmId}) {
                {    
                 
                     filmes.map (filme =>  <MovieContainer>{
-                    <img key={filme.id} img src={filme.posterURL} onClick={(()=>{setarIdDoFilme(filme.id)})} alt={filme.title}/>
+                    <Link to="/assentos">
+                             <img key={filme.id} img src={filme.posterURL} onClick={(()=>{setarIdDoFilme(filme.id)})} alt={filme.title}/>
+                    </Link>
+                   
                     }
                     </MovieContainer>
                 
