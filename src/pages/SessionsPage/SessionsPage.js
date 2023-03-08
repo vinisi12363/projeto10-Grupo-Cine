@@ -32,7 +32,6 @@ export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessio
         return <div>Carregando...</div>
     }
     function setarAssentos(id){
-        alert("criando link")
         seatsLink = `/assentos/${id}`
         setSeatsLink (seatsLink)
         setSessionId (id)
