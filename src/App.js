@@ -22,13 +22,15 @@ export default function App() {
              /> 
             }/>
 
-            <Route path="/assentos" element= {
+            <Route path="/assentos/240" element= {
                 <SeatsPage
                     filmId ={filmId} 
                     filmes={filmes}
                 /> 
              }/>
-            <Route path="/sessao" element={<SessionsPage />} />
+            <Route path="/sessoes/37" element={<SessionsPage 
+                  filmId ={filmId} 
+            />} />
             <Route path="/sucessRequire" element={<SuccessPage />} />
 
             </Routes>

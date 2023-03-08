@@ -47,11 +47,7 @@ export default function SeatsPage({filmId, filmes}) {
                             {
                                 filmeEscolhido.seats.map(s => {
                                 
-                              /*  if (s.isAvaliable) {
-                                    color = isAvaliableColor();
-                                } else {
-                                    color = isNotAvaliabeColor();
-                                } */
+                          
                                 return <SeatItem key={s.id} color={color} border={border}>{s.name}</SeatItem>;
                             })}
 

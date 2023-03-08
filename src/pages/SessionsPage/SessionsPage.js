@@ -1,45 +1,74 @@
 import styled from "styled-components"
+import { useEffect } from "react"
+import { useState } from "react"
+import axios from "axios"
+import { Link } from "react-router-dom"
 
-export default function SessionsPage() {
+export default function SessionsPage({filmId}) {
 
-    return (
+    const [sessionInfos, setSessionInfos] = useState ([])
+   
+    useEffect (()=>{
+        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmId}/showtimes`)  
+        
+        if(filmId !== undefined ) {
+            require.then (res => {
+               
+                setSessionInfos (res.data)
+                console.log("session:",res.data)
+    
+            })
+    
+            require.catch (err => {
+                console.log (err.response.data.error)
+            })
+
+        }
+       
+    }, [])
+    
+    if(sessionInfos.length === 0){
+        return <div>Carregando...</div>
+    }
+
+        return (
         <PageContainer>
             Selecione o horário
-            <div>
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+           
+            {
+                   sessionInfos.days.map(session => <SessionContainer key={session.id}> {
+                       <>
+                            <p>{session.weekday} - {session.date}</p>
+                                
+                            {session.showtimes.map(time => <ButtonsContainer>{
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
+                                    <button>{time.name}</button>
+    
+                            }  </ButtonsContainer> )}
+                              
+                          
 
-                <SessionContainer>
-                    Sexta - 03/03/2023
-                    <ButtonsContainer>
-                        <button>14:00</button>
-                        <button>15:00</button>
-                    </ButtonsContainer>
-                </SessionContainer>
-            </div>
+                       </>
+                     
+                   
+                    }</SessionContainer>)
+             }   
 
-            <FooterContainer>
+              
+                         
+          
+              <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={sessionInfos.posterURL} alt={sessionInfos.title} />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
+                 <p>{sessionInfos.title}</p>
                 </div>
             </FooterContainer>
+          
 
+          
+          
         </PageContainer>
     )
 }
