@@ -41,16 +41,15 @@ export default function SessionsPage({filmId}) {
                             <p>{session.weekday} - {session.date}</p>
                                 
                             {session.showtimes.map(time => <ButtonsContainer>{
-
+                                <>
+                                <button>{time.name}</button>
                                     <button>{time.name}</button>
-    
+                                </>
+
                             }  </ButtonsContainer> )}
-                              
-                          
 
                        </>
-                     
-                   
+
                     }</SessionContainer>)
              }   
 
@@ -90,7 +89,9 @@ const PageContainer = styled.div`
 const SessionContainer = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+ 
+    align-items:center;
+
     font-family: 'Roboto';
     font-size: 20px;
     color: #293845;
