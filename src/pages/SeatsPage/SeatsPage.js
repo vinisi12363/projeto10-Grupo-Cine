@@ -1,11 +1,34 @@
+import { useEffect, useState } from "react"
 import styled from "styled-components"
+import axios from "axios"
 
-export default function SeatsPage() {
+export default function SeatsPage({filmId}) {
+    console.log("filme id vale:", filmId)
+    const [seats, setSeats] = useState ([])
+    useEffect (()=>{
+        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${filmId}/seats`)  
+        if(filmId !== undefined ) {
+            require.then (res => {
+                console.log (res.data)
+                setSeats (res.data)
+    
+            })
+    
+            require.catch (err => {
+                console.log (err.response.data.error)
+            })
+
+        }
+     
+
+
+
+    }, [filmId])
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
-
+            
             <SeatsContainer>
                 <SeatItem>01</SeatItem>
                 <SeatItem>02</SeatItem>

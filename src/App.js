@@ -3,17 +3,33 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
+import { useState } from "react"
+import { BrowserRouter ,Route, Routes } from "react-router-dom"
 
 export default function App() {
+    const [filmId , setFilmId] = useState ([])
     return (
-        <>
+        <BrowserRouter>
            <NavContainer>CINEFLEX</NavContainer>
+            <Routes>
+           
+            <Route path ="/" element= { <HomePage 
+                filmId = {filmId}
+                setFilmId= {setFilmId}
+             /> 
+            }/>
 
-             <HomePage />
-            {/* <SeatsPage /> */}
-            {/*<SessionsPage />*/}
-            {/* <SuccessPage /> */}
-        </>
+            <Route path="assentos" element= {
+                <SeatsPage
+                    filmId ={filmId} 
+                /> 
+             }/>
+            <Route path="sessao" element={<SessionsPage />} />
+            <Route path="sucessRequire" element={<SuccessPage />} />
+
+            </Routes>
+            
+        </BrowserRouter>
     )
 }
 

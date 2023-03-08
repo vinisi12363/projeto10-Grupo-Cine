@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
-
-export default function HomePage() {
+import { Link } from "react-router-dom";
+export default function HomePage({filmId, setFilmId}) {
     const [filmes, setFilmes] = useState ([]);
     
     useEffect (() => {
@@ -20,8 +20,15 @@ export default function HomePage() {
 
     }, []);
     
-
-
+    if (filmes.length === 0) {
+        return <div>Carregando....</div>
+    }
+    function setarIdDoFilme (id){
+        filmId=id
+        setFilmId(filmId);
+        console.log (filmId)
+    }
+    
 
     return (
         <PageContainer>
@@ -33,7 +40,7 @@ export default function HomePage() {
                {    
                 
                     filmes.map (filme =>  <MovieContainer>{
-                    <img key={filme.id} img src={filme.posterURL} alt={filme.title}/>
+                    <img key={filme.id} img src={filme.posterURL} onClick={(()=>{setarIdDoFilme(filme.id)})} alt={filme.title}/>
                     }
                     </MovieContainer>
                 
