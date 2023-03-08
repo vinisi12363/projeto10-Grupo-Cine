@@ -3,14 +3,17 @@ import styled from "styled-components"
 import axios from "axios"
 
 export default function SeatsPage({filmId, filmes}) {
+
+    const [color, setColor] = useState ("#C3CFD9")
+    const [border, setBorder] = useState ("#808F9D")
     
-    const [seats, setSeats] = useState ([])
+    const [filmeEscolhido, setfilmeEscolhido] = useState ([])
     useEffect (()=>{
         const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${filmId}/seats`)  
         if(filmId !== undefined ) {
             require.then (res => {
-                console.log (res.data)
-                setSeats (res.data)
+                console.log ("filme escolhido",res.data)
+                setfilmeEscolhido (res.data)
     
             })
     
@@ -25,25 +28,33 @@ export default function SeatsPage({filmId, filmes}) {
 
     }, [])
 
-    if (seats.length === 0) {
+    if (filmeEscolhido.length === 0) {
         return <div>Carregando....</div>
+    }
+
+    function isAvaliableColor(){
+        setColor ("#C3CFD9")
+        setBorder("#808F9D")
+    }
+    function isNotAvaliabeColor(){
+        setColor ("#FBE192")
+        setBorder("F7C52B")
     }
     return (
         <PageContainer>
             Selecione o(s) assento(s)
             <SeatsContainer>
-        
-               {
-                    
-                     seats.seats.map( s => (
-                         <SeatItem key={s.id}>{s.name}</SeatItem>
-                   )
-                    )
-                    
+                            {
+                                filmeEscolhido.seats.map(s => {
+                                
+                              /*  if (s.isAvaliable) {
+                                    color = isAvaliableColor();
+                                } else {
+                                    color = isNotAvaliabeColor();
+                                } */
+                                return <SeatItem key={s.id} color={color} border={border}>{s.name}</SeatItem>;
+                            })}
 
-
-               } 
-                 
                 
              </SeatsContainer> 
             
@@ -76,11 +87,11 @@ export default function SeatsPage({filmId, filmes}) {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={filmeEscolhido.movie.posterURL} alt={filmeEscolhido.movie.title} />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{filmeEscolhido.movie.title}</p>
+                    <p>{filmeEscolhido.day.weekday} - {filmeEscolhido.name}</p>
                 </div>
             </FooterContainer>
         
@@ -149,8 +160,8 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${(props)=>props.border };         // Essa cor deve mudar
+    background-color: ${(props)=>props.color };   // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
