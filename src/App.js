@@ -7,8 +7,11 @@ import { useState } from "react"
 import { BrowserRouter ,Route, Routes } from "react-router-dom"
 
 export default function App() {
-    const [filmId , setFilmId] = useState ([])
+    const [filmId , setFilmId] = useState ("")
     const [filmes, setFilmes] = useState ([]);
+    const [sessionLink, setSessionLink]= useState("")
+    const [seatsLink, setSeatsLink] = useState ("")
+    const [sessionId, setSessionId] = useState("")
     return (
         <BrowserRouter>
            <NavContainer>CINEFLEX</NavContainer>
@@ -19,18 +22,30 @@ export default function App() {
                 setFilmId= {setFilmId}
                 filmes={filmes}
                 setFilmes={setFilmes}
+                sessionLink={sessionLink}
+                setSessionLink={setSessionLink}
              /> 
             }/>
 
-            <Route path="/assentos/240" element= {
+            <Route path={sessionLink} element={<SessionsPage 
+                  filmId ={filmId} 
+                  seatsLink={seatsLink}
+                  setSeatsLink= {setSeatsLink}
+                  setSessionId= {setSessionId}
+
+            />} />
+
+
+            <Route path={seatsLink} element= {
                 <SeatsPage
+                    sessionLink={sessionLink}
                     filmId ={filmId} 
                     filmes={filmes}
+                    sessionId= {sessionId}
+    
                 /> 
              }/>
-            <Route path="/sessoes/37" element={<SessionsPage 
-                  filmId ={filmId} 
-            />} />
+           
             <Route path="/sucessRequire" element={<SuccessPage />} />
 
             </Routes>

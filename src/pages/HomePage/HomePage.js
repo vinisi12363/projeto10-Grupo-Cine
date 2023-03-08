@@ -3,12 +3,11 @@ import styled from "styled-components"
 import axios from "axios"
 import { Link } from "react-router-dom"
 
-export default function HomePage({filmId, setFilmId, filmes, setFilmes}) {
-   
+export default function HomePage({filmId, setFilmId, filmes, setFilmes,  sessionLink, setSessionLink}) {
     
     useEffect (() => {
         const require = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies") 
-
+    
         require.then (res => {
           
             setFilmes (res.data)
@@ -26,8 +25,9 @@ export default function HomePage({filmId, setFilmId, filmes, setFilmes}) {
     }
     function setarIdDoFilme (id){
         filmId=id
+        sessionLink = `/sessoes/${id}`
+        setSessionLink(sessionLink);
         setFilmId(filmId);
-        console.log (filmId)
     }
     
 
@@ -41,7 +41,8 @@ export default function HomePage({filmId, setFilmId, filmes, setFilmes}) {
                {    
                 
                     filmes.map (filme =>  <MovieContainer key={filme.id}>{
-                    <Link to="/sessoes/37">
+                    
+                    <Link to={sessionLink}>
                              <img key={filme.id} img src={filme.posterURL.toString()} onClick={(()=>{setarIdDoFilme(filme.id)})} alt={filme.title}/>
                     </Link>
                    

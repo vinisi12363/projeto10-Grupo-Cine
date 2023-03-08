@@ -4,7 +4,8 @@ import { useState } from "react"
 import axios from "axios"
 import { Link } from "react-router-dom"
 
-export default function SessionsPage({filmId}) {
+
+export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessionId}) {
 
     const [sessionInfos, setSessionInfos] = useState ([])
    
@@ -30,7 +31,13 @@ export default function SessionsPage({filmId}) {
     if(sessionInfos.length === 0){
         return <div>Carregando...</div>
     }
-
+    function setarAssentos(id){
+        alert("criando link")
+        seatsLink = `/assentos/${id}`
+        setSeatsLink (seatsLink)
+        setSessionId (id)
+        console.log("setSeatsLink: ",seatsLink)
+    }
         return (
         <PageContainer>
             Selecione o horário
@@ -42,8 +49,11 @@ export default function SessionsPage({filmId}) {
                                 
                             {session.showtimes.map(time => <ButtonsContainer>{
                                 <>
-                                <button>{time.name}</button>
-                                    <button>{time.name}</button>
+                                <Link to={seatsLink}>
+                                  <button onClick={()=>setarAssentos(time.id)}>{time.name}</button>
+                                </Link>
+                              
+                                
                                 </>
 
                             }  </ButtonsContainer> )}

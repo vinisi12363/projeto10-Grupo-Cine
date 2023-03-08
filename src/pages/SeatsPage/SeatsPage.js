@@ -2,14 +2,15 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
 
-export default function SeatsPage({filmId, filmes}) {
+export default function SeatsPage({sessionLink ,filmId, filmes,sessionId}) {
 
     const [color, setColor] = useState ("#C3CFD9")
     const [border, setBorder] = useState ("#808F9D")
     
     const [filmeEscolhido, setfilmeEscolhido] = useState ([])
     useEffect (()=>{
-        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${filmId}/seats`)  
+        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${sessionId}/seats`)  
+        
         if(filmId !== undefined ) {
             require.then (res => {
                 console.log ("filme escolhido",res.data)
