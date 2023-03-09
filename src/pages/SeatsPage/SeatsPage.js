@@ -63,18 +63,23 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
     }
 
 
-    function addSeat(id, name,) {
+    function addSeat(id, name, isAvailable) {
         setSeatId([...seatId, id]);
 
-
-        setIngressos([...ingressos, name]);
-        const newSeats= seats.map((selection)=>{
-            if(selection.id === id ){
-                return {...selection, selected: !selection.selected}
-            }
-            return selection
-        })
-        setSeats(newSeats);
+       
+        if (!isAvailable){
+            alert("não é possivel selecionar um assento reservado")
+        }else{
+            setIngressos([...ingressos, name]);
+            const newSeats= seats.map((selection)=>{
+                if(selection.id === id ){
+                    return {...selection, selected: !selection.selected}
+                }
+                return selection
+            })
+            setSeats(newSeats);
+        }
+      
     }
    
 
@@ -135,7 +140,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                            border={((s.selected && s.isAvailable) && "#0E7D71"
                                 || (!s.selected && s.isAvailable)&& "#7B8B99"  
                                 || (!s.selected && !s.isAvailable) && "#F7652B")} 
-                            onClick={() => addSeat(s.id, s.name, s.selected)}>
+                            onClick={() => addSeat(s.id, s.name,s.isAvailable)}>
                             {s.name}
                             </SeatItem>;
                         })}
