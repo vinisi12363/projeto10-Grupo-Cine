@@ -50,7 +50,7 @@ export default function SessionsPage({setSessionId,filmeSessao, setFilmeSessao})
                         sessionInfos.days.map(session => <SessionContainer key={session.id} data-test="movie-day"> {
                             <>
                                 <p>{session.weekday} - {session.date}</p>
-                                    
+                                <DivContainerButton>
                                     {session.showtimes.map(time => <ButtonsContainer>{
                                     <>
                                     <Link to={`/assentos/${time.id}`}>
@@ -61,8 +61,8 @@ export default function SessionsPage({setSessionId,filmeSessao, setFilmeSessao})
     
                                 }  </ButtonsContainer> )}
     
+                            </DivContainerButton>
                             </>
-    
                         }</SessionContainer>)
                     }     
     
@@ -104,6 +104,7 @@ const PageContainer = styled.div`
 const SessionContainer = styled.div`
     display: flex;
     flex-direction: column;
+    flex-wrap:wrap;
  
     align-items:center;
 
@@ -112,10 +113,20 @@ const SessionContainer = styled.div`
     color: #293845;
     padding: 0 20px;
 `
+const DivContainerButton= styled.div`
+
+
+display:flex;
+flex-direction: row;
+justify-content:space-around
+
+`
 const ButtonsContainer = styled.div`
+    
     display: flex;
     flex-direction: row;
     margin: 20px 0;
+    margin-left: 13px;
     button {
         margin-right: 20px;
     }

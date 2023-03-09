@@ -2,159 +2,189 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
 import { Link, useParams } from "react-router-dom"
+import SessionsPage from "../SessionsPage/SessionsPage"
 
 
-export default function SeatsPage({filmId,userData,setUserData, ingressos , setIngressos}) {
-
-    const [seatInfos , setaSeatInfos] = useState()
-    const {idFilme} = useParams()
-    const [color, setColor] = useState ("#C3CFD9")
-    const [border, setBorder] = useState ("#808F9D")
+export default function SeatsPage({ filmId, userData, setUserData, ingressos, setIngressos }) {
+    const [avaliableSeat, setAvaliableSeat] = useState(false)
+    const [selecionado, setSelecionado] = useState(false)
+    const [seatInfos, setaSeatInfos] = useState()
+    const { idFilme } = useParams()
     const [nome, setNome] = useState("")
-    const [CPF , setCPF]= useState ("")
-    const [seatId , setSeatId] = useState([]);
+    const [CPF, setCPF] = useState("")
+    const [seatId, setSeatId] = useState([]);
+    const [seats, setSeats] = useState([{}])
+    const colors = [
+
+        { color: "#C3CFD9", border: "#7B8B99" },
+        { color: "#FBE192", border: "#F7652B" },
+        { color: "#1AAE9E", border: "#0E7D71" },
+    ]
+
     let userReserve = {
-        ids:[], 
-        name:"",
-        cpf:""
+        ids: [],
+        name: "",
+        cpf: ""
     }
 
-  
-    useEffect (()=>{
-        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idFilme}/seats`)  
-        
-        if(filmId !== undefined ) {
-            require.then (res => {
-                setaSeatInfos(res.data)
 
-    
+    useEffect(() => {
+        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idFilme}/seats`)
+
+        if (filmId !== undefined) {
+            require.then(res => {
+                setaSeatInfos(res.data)
+                console.log(res.data)
+                setSeats(
+                    res.data.seats.map(({ id, name, isAvailable }) => {
+                        return { id, name, isAvailable, selected: false }
+                    })
+                   
+                )
+               
+            })  
+
+            require.catch(err => {
+                console.log(err.response.data.error)
             })
-    
-            require.catch (err => {
-                console.log (err.response.data.error)
-            })
+
+
 
         }
-     
+
 
 
 
     }, [])
+
 
     if (seatInfos === undefined) {
         return <div>Carregando....</div>
     }
 
 
-     function addSeat(id, name){
+    function addSeat(id, name,) {
         setSeatId([...seatId, id]);
-        
-        setIngressos([...ingressos, name]);   
-     }
 
-     console.log(" ingressos valem:",ingressos)
-     const handleInputChange = (event) => {
-         const value  = event.target.value;
-        setNome(value);
-      };
+
+        setIngressos([...ingressos, name]);
+        const newSeats= seats.map((selection)=>{
+            if(selection.id === id ){
+                return {...selection, selected: !selection.selected}
+            }
+            return selection
+        })
+        setSeats(newSeats);
+    }
    
-      const inputCpfChange = (event) => {
-        const value  = event.target.value;
+
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        setNome(value);
+    };
+
+    const inputCpfChange = (event) => {
+        const value = event.target.value;
         setCPF(value);
-      }
-     
-     
-      const setarReserva = () => {
-            userReserve.ids = [...seatId] 
-            userReserve.name = nome
-            userReserve.cpf=CPF
-            setUserData({
-                name:nome,
-                cpf:CPF
-            })
-         
-                axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', userReserve)
-                 .then(response => console.log(response))
-                 .catch(error => console.error(error));
-               
-              
-      };
-      
-      
-     
-
-      
-
-    function isAvaliableColor(){
-        setColor ("#C3CFD9")
-        setBorder("#808F9D")
-    }
-    function isNotAvaliabeColor(){
-        setColor ("#FBE192")
-        setBorder("F7C52B")
     }
 
 
-    if (seatInfos !== undefined){
+    const setarReserva = () => {
+        userReserve.ids = [...seatId]
+        userReserve.name = nome
+        userReserve.cpf = CPF
+        setUserData({
+            name: nome,
+            cpf: CPF
+        })
 
-    return (
+        axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', userReserve)
+            .then(response => console.log(response))
+            .catch(error => console.error(error));
 
 
-        <PageContainer>
-            Selecione o(s) assento(s)
-            <SeatsContainer>
-                            {
-                                seatInfos.seats.map(s => {
-                                
-                          
-                                return <SeatItem data-test="seat" key={s.id} color={color} border={border} onClick={()=> addSeat(s.id, s.name)}>{s.name}</SeatItem>;
-                            })}
+    };
 
-                
-             </SeatsContainer> 
-            
-                 
-       
-            <CaptionContainer>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Selecionado
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Disponível
-                </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle />
-                    Indisponível
-                </CaptionItem>
-            </CaptionContainer>
 
-            <FormContainer>
-                Nome do Comprador:
-                <input data-test="client-name"type="text" key="nome" placeholder="Digite seu nome..."  onChange={handleInputChange}/>
 
-                CPF do Comprador:
-                <input data-test="client-cpf"type="text" key="cpf" placeholder="Digite seu CPF..."  onChange={inputCpfChange} />
-                <Link  to="/sucess">
-                <button  data-test="book-seat-btn" onClick={()=>setarReserva()} >Reservar Assento(s)</button>
-                </Link>           
-               
-            </FormContainer>
 
-            <FooterContainer data-test="footer">
-                <div>
-                    <img src={seatInfos.movie.posterURL} alt={seatInfos.movie.title} />
-                </div>
-                <div>
-                    <p>{seatInfos.movie.title}</p>
-                    <p>{seatInfos.day.weekday} - {seatInfos.name}</p>
-                </div>
-            </FooterContainer>
-        
-        </PageContainer>
-    )
-    
+
+
+
+
+    if (seatInfos !== undefined) {
+
+        return (
+
+
+            <PageContainer>
+                Selecione o(s) assento(s)
+                <SeatsContainer >
+                    {
+
+
+                        seats.map(s => {
+
+
+                            return <SeatItem 
+                            data-test="seat" 
+                            key={s.id} 
+                            color={((s.selected && s.isAvailable) && "#1AAE9E" 
+                                || (!s.selected && s.isAvailable)&& "#C3CFD9"  
+                                || (!s.selected && !s.isAvailable) && "#FBE192")}
+                           border={((s.selected && s.isAvailable) && "#0E7D71"
+                                || (!s.selected && s.isAvailable)&& "#7B8B99"  
+                                || (!s.selected && !s.isAvailable) && "#F7652B")} 
+                            onClick={() => addSeat(s.id, s.name, s.selected)}>
+                            {s.name}
+                            </SeatItem>;
+                        })}
+
+
+                </SeatsContainer>
+
+
+
+                <CaptionContainer>
+                    <CaptionItem>
+                        <CaptionCircle color={("#1AAE9E")} border={("#0E7D71")} />
+                        Selecionado
+                    </CaptionItem>
+                    <CaptionItem>
+                        <CaptionCircle color={("#C3CFD9")} border={("#808F9D")} />
+                        Disponível
+                    </CaptionItem>
+                    <CaptionItem>
+                        <CaptionCircle color={("#FBE192")} border={("#F7C52B")} />
+                        Indisponível
+                    </CaptionItem>
+                </CaptionContainer>
+
+                <FormContainer>
+                    Nome do Comprador:
+                    <input data-test="client-name" type="text" key="nome" placeholder="Digite seu nome..." onChange={handleInputChange} />
+
+                    CPF do Comprador:
+                    <input data-test="client-cpf" type="text" key="cpf" placeholder="Digite seu CPF..." onChange={inputCpfChange} />
+                    <Link to="/sucess">
+                        <button data-test="book-seat-btn" onClick={() => setarReserva()} >Reservar Assento(s)</button>
+                    </Link>
+
+                </FormContainer>
+
+                <FooterContainer data-test="footer">
+                    <div>
+                        <img src={seatInfos.movie.posterURL} alt={seatInfos.movie.title} />
+                    </div>
+                    <div>
+                        <p>{seatInfos.movie.title}</p>
+                        <p>{seatInfos.day.weekday} - {seatInfos.name}</p>
+                    </div>
+                </FooterContainer>
+
+            </PageContainer>
+        )
+
     }
 }
 
@@ -201,8 +231,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+     border: 1px solid ${(props) => props.border}; 
+    background-color: ${(props) => props.color};    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -218,8 +248,8 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const SeatItem = styled.div`
-    border: 1px solid ${(props)=>props.border };         // Essa cor deve mudar
-    background-color: ${(props)=>props.color };   // Essa cor deve mudar
+    border: 1px solid ${(props) => props.border}; 
+    background-color: ${(props) => props.color};   // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
