@@ -2,42 +2,39 @@ import styled from "styled-components"
 import { useEffect } from "react"
 import { useState } from "react"
 import axios from "axios"
-import { Link } from "react-router-dom"
+import { Link , useParams} from "react-router-dom"
 
 
-export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessionId}) {
-
-    const [sessionInfos, setSessionInfos] = useState ([])
-   
+export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessionId, setSessionInfos, sessionInfos}) {
+    const {idFilme} = useParams()
     useEffect (()=>{
-        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmId}/showtimes`)  
+        const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`
+        const require = axios.get(url)  
         
-        if(filmId !== undefined ) {
+       
             require.then (res => {
                
-                setSessionInfos (res.data)
-                console.log("session:",res.data)
-    
+                setSessionInfos (res.data)   
+                
             })
     
             require.catch (err => {
                 console.log (err.response.data.error)
             })
-
-        }
        
     }, [])
-    
-    if(sessionInfos.length === 0){
+ 
+    if(sessionInfos === undefined){
         return <div>Carregando...</div>
     }
     function setarAssentos(id){
         seatsLink = `/assentos/${id}`
         setSeatsLink (seatsLink)
         setSessionId (id)
-        console.log("setSeatsLink: ",seatsLink)
+      
     }
         return (
+            
         <PageContainer>
             Selecione o horário
            
@@ -48,7 +45,7 @@ export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessio
                                 
                             {session.showtimes.map(time => <ButtonsContainer>{
                                 <>
-                                <Link to={seatsLink}>
+                                <Link to={`/assentos/${time.id}`}>
                                   <button onClick={()=>setarAssentos(time.id)}>{time.name}</button>
                                 </Link>
                               

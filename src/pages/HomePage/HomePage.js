@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
-import { Link } from "react-router-dom"
+import { Link, useParams} from "react-router-dom"
 
-export default function HomePage({filmId, setFilmId, filmes, setFilmes,  sessionLink, setSessionLink}) {
-    
+export default function HomePage({filmId, setFilmId, filmes, setFilmes,  sessionLink, setSessionLink, idFilm}) {
+   
+ 
     useEffect (() => {
         const require = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies") 
     
         require.then (res => {
           
             setFilmes (res.data)
+            console.log(filmes)
 
         })
 
@@ -20,13 +22,12 @@ export default function HomePage({filmId, setFilmId, filmes, setFilmes,  session
 
     }, []);
     
-    if (filmes.length === 0) {
+    if (!filmes) {
         return <div>Carregando....</div>
     }
+
     function setarIdDoFilme (id){
         filmId=id
-        sessionLink = `/sessoes/${id}`
-        setSessionLink(sessionLink);
         setFilmId(filmId);
     }
     
@@ -42,7 +43,7 @@ export default function HomePage({filmId, setFilmId, filmes, setFilmes,  session
                 
                     filmes.map (filme =>  <MovieContainer key={filme.id}>{
                     
-                    <Link to={sessionLink}>
+                    <Link to={`/sessoes/${filme.id}`}>
                              <img key={filme.id} img src={filme.posterURL.toString()} onClick={(()=>{setarIdDoFilme(filme.id)})} alt={filme.title}/>
                     </Link>
                    

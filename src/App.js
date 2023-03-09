@@ -4,7 +4,8 @@ import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import { useState } from "react"
-import { BrowserRouter ,Route, Routes } from "react-router-dom"
+
+import { BrowserRouter ,Route, Routes, Link} from "react-router-dom"
 
 export default function App() {
     const [filmId , setFilmId] = useState ("")
@@ -12,9 +13,17 @@ export default function App() {
     const [sessionLink, setSessionLink]= useState("")
     const [seatsLink, setSeatsLink] = useState ("")
     const [sessionId, setSessionId] = useState("")
+    const [sessionInfos, setSessionInfos] = useState("")
+   
+   
+
     return (
         <BrowserRouter>
-           <NavContainer>CINEFLEX</NavContainer>
+          <Link to="/">
+          <NavContainer>CINEFLEX</NavContainer>
+          </Link>
+        
+          
             <Routes>
            
             <Route path ="/" element= { <HomePage 
@@ -24,19 +33,22 @@ export default function App() {
                 setFilmes={setFilmes}
                 sessionLink={sessionLink}
                 setSessionLink={setSessionLink}
+             
              /> 
             }/>
 
-            <Route path={sessionLink} element={<SessionsPage 
+            <Route path="/sessoes/:idFilme" element={<SessionsPage 
                   filmId ={filmId} 
                   seatsLink={seatsLink}
                   setSeatsLink= {setSeatsLink}
                   setSessionId= {setSessionId}
+                  setSessionInfos={setSessionInfos}
+                  sessionInfos={sessionInfos}
 
             />} />
 
 
-            <Route path={seatsLink} element= {
+            <Route path="/assentos/:idFilm" element= {
                 <SeatsPage
                     sessionLink={sessionLink}
                     filmId ={filmId} 

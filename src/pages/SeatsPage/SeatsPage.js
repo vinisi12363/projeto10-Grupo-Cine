@@ -4,6 +4,7 @@ import axios from "axios"
 
 export default function SeatsPage({sessionLink ,filmId, filmes,sessionId}) {
 
+
     const [color, setColor] = useState ("#C3CFD9")
     const [border, setBorder] = useState ("#808F9D")
     
