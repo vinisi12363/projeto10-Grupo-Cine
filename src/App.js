@@ -11,10 +11,10 @@ export default function App() {
     const [filmId , setFilmId] = useState ("")
     const [filmes, setFilmes] = useState ([]);
     const [sessionLink, setSessionLink]= useState("")
-    const [seatsLink, setSeatsLink] = useState ("")
     const [sessionId, setSessionId] = useState("")
-   
-   
+    const [filmeSessao , setFilmeSessao]= useState({nomeFilme:"", data:"", hora:""})
+    const [userData, setUserData] = useState({ name:"", cpf:""})
+    const [ingressos , setIngressos] = useState([])
    
 
     return (
@@ -38,10 +38,10 @@ export default function App() {
             }/>
 
             <Route path="/sessoes/:idFilme" element={<SessionsPage 
-                  filmId ={filmId} 
-                  seatsLink={seatsLink}
-                  setSeatsLink= {setSeatsLink}
+        
                   setSessionId= {setSessionId}
+                  filmeSessao={filmeSessao}
+                  setFilmeSessao={setFilmeSessao}
                  
 
             />} />
@@ -49,15 +49,22 @@ export default function App() {
 
             <Route path="/assentos/:idFilme" element= {
                 <SeatsPage
-                    sessionLink={sessionLink}
+                   
                     filmId ={filmId} 
-                    filmes={filmes}
+                    userData={userData}
+                    setUserData={setUserData}
+                    ingressos={ingressos}
+                    setIngressos ={setIngressos}
                    
     
                 /> 
              }/>
            
-            <Route path="/sucessRequire" element={<SuccessPage />} />
+            <Route path="/sucess" element={<SuccessPage 
+                 filmeSessao={filmeSessao}
+                 userData={userData}
+                 ingressos={ingressos}
+            />} />
 
             </Routes>
             

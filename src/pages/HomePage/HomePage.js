@@ -40,7 +40,7 @@ export default function HomePage({filmId, setFilmId, filmes, setFilmes,  session
             
                {    
                 
-                    filmes.map (filme =>  <MovieContainer key={filme.id}>{
+                    filmes.map (filme =>  <MovieContainer key={filme.id} data-test="movie">{
                     
                     <Link to={`/sessoes/${filme.id}`}>
                              <img key={filme.id} img src={filme.posterURL.toString()} onClick={(()=>{setarIdDoFilme(filme.id)})} alt={filme.title}/>

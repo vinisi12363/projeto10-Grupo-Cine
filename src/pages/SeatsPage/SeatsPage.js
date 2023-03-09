@@ -1,22 +1,30 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
-export default function SeatsPage({filmId}) {
+
+export default function SeatsPage({filmId,userData,setUserData, ingressos , setIngressos}) {
 
     const [seatInfos , setaSeatInfos] = useState()
     const {idFilme} = useParams()
     const [color, setColor] = useState ("#C3CFD9")
     const [border, setBorder] = useState ("#808F9D")
-    
+    const [nome, setNome] = useState("")
+    const [CPF , setCPF]= useState ("")
+    const [seatId , setSeatId] = useState([]);
+    let userReserve = {
+        ids:[], 
+        name:"",
+        cpf:""
+    }
 
+  
     useEffect (()=>{
         const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idFilme}/seats`)  
         
         if(filmId !== undefined ) {
             require.then (res => {
-                console.log ("sessao",res.data)
                 setaSeatInfos(res.data)
 
     
@@ -37,6 +45,46 @@ export default function SeatsPage({filmId}) {
         return <div>Carregando....</div>
     }
 
+
+     function addSeat(id, name){
+        setSeatId([...seatId, id]);
+        
+        setIngressos([...ingressos, name]);   
+     }
+
+     console.log(" ingressos valem:",ingressos)
+     const handleInputChange = (event) => {
+         const value  = event.target.value;
+        setNome(value);
+      };
+   
+      const inputCpfChange = (event) => {
+        const value  = event.target.value;
+        setCPF(value);
+      }
+     
+     
+      const setarReserva = () => {
+            userReserve.ids = [...seatId] 
+            userReserve.name = nome
+            userReserve.cpf=CPF
+            setUserData({
+                name:nome,
+                cpf:CPF
+            })
+         
+                axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', userReserve)
+                 .then(response => console.log(response))
+                 .catch(error => console.error(error));
+               
+              
+      };
+      
+      
+     
+
+      
+
     function isAvaliableColor(){
         setColor ("#C3CFD9")
         setBorder("#808F9D")
@@ -45,9 +93,13 @@ export default function SeatsPage({filmId}) {
         setColor ("#FBE192")
         setBorder("F7C52B")
     }
+
+
     if (seatInfos !== undefined){
 
     return (
+
+
         <PageContainer>
             Selecione o(s) assento(s)
             <SeatsContainer>
@@ -55,7 +107,7 @@ export default function SeatsPage({filmId}) {
                                 seatInfos.seats.map(s => {
                                 
                           
-                                return <SeatItem key={s.id} color={color} border={border}>{s.name}</SeatItem>;
+                                return <SeatItem data-test="seat" key={s.id} color={color} border={border} onClick={()=> addSeat(s.id, s.name)}>{s.name}</SeatItem>;
                             })}
 
                 
@@ -80,15 +132,17 @@ export default function SeatsPage({filmId}) {
 
             <FormContainer>
                 Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+                <input data-test="client-name"type="text" key="nome" placeholder="Digite seu nome..."  onChange={handleInputChange}/>
 
                 CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
-
-                <button>Reservar Assento(s)</button>
+                <input data-test="client-cpf"type="text" key="cpf" placeholder="Digite seu CPF..."  onChange={inputCpfChange} />
+                <Link  to="/sucess">
+                <button  data-test="book-seat-btn" onClick={()=>setarReserva()} >Reservar Assento(s)</button>
+                </Link>           
+               
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={seatInfos.movie.posterURL} alt={seatInfos.movie.title} />
                 </div>

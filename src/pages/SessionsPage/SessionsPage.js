@@ -5,7 +5,7 @@ import axios from "axios"
 import { Link , useParams} from "react-router-dom"
 
 
-export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessionId}) {
+export default function SessionsPage({setSessionId,filmeSessao, setFilmeSessao}) {
     const {idFilme} = useParams()
     const [sessionInfos, setSessionInfos] = useState()
     useEffect (()=>{
@@ -29,10 +29,17 @@ export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessio
     if(sessionInfos === undefined){
         return <div>Carregando...</div>
     }
-    function setarAssentos(id){
+    function setarAssentos(id, time, date){
         setSessionId (id)
-      
+        setFilmeSessao({
+            nomeFilme:sessionInfos.title,
+            data:date,
+            hora:time
+        })
+        console.log ("filmesSessao",filmeSessao)
     }
+
+    console.log ("filmesSessao",filmeSessao)
     if(sessionInfos !== undefined){
         return (
         
@@ -40,14 +47,14 @@ export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessio
                 Selecione o horário
                 
                     {
-                        sessionInfos.days.map(session => <SessionContainer key={session.id}> {
+                        sessionInfos.days.map(session => <SessionContainer key={session.id} data-test="movie-day"> {
                             <>
                                 <p>{session.weekday} - {session.date}</p>
                                     
                                     {session.showtimes.map(time => <ButtonsContainer>{
                                     <>
                                     <Link to={`/assentos/${time.id}`}>
-                                        <button onClick={()=>setarAssentos(time.id)}>{time.name}</button>
+                                        <button data-test="showtime" key={time.id}onClick={()=>setarAssentos(time.id,time.name, session.date)}>{time.name}</button>
                                     </Link>
                             
                                     </>
@@ -62,7 +69,7 @@ export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessio
                     
                                 
                 
-                    <FooterContainer>
+                    <FooterContainer data-test="footer">
                     <div>
                         <img src={sessionInfos.posterURL} alt={sessionInfos.title} />
                     </div>
