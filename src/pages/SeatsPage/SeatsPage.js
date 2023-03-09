@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
+import { useParams } from "react-router-dom"
 
-export default function SeatsPage({sessionLink ,filmId, filmes,sessionId}) {
+export default function SeatsPage({filmId}) {
 
-
+    const [seatInfos , setaSeatInfos] = useState()
+    const {idFilme} = useParams()
     const [color, setColor] = useState ("#C3CFD9")
     const [border, setBorder] = useState ("#808F9D")
     
-    const [filmeEscolhido, setfilmeEscolhido] = useState ([])
+
     useEffect (()=>{
-        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${sessionId}/seats`)  
+        const require = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idFilme}/seats`)  
         
         if(filmId !== undefined ) {
             require.then (res => {
-                console.log ("filme escolhido",res.data)
-                setfilmeEscolhido (res.data)
+                console.log ("sessao",res.data)
+                setaSeatInfos(res.data)
+
     
             })
     
@@ -30,7 +33,7 @@ export default function SeatsPage({sessionLink ,filmId, filmes,sessionId}) {
 
     }, [])
 
-    if (filmeEscolhido.length === 0) {
+    if (seatInfos === undefined) {
         return <div>Carregando....</div>
     }
 
@@ -42,12 +45,14 @@ export default function SeatsPage({sessionLink ,filmId, filmes,sessionId}) {
         setColor ("#FBE192")
         setBorder("F7C52B")
     }
+    if (seatInfos !== undefined){
+
     return (
         <PageContainer>
             Selecione o(s) assento(s)
             <SeatsContainer>
                             {
-                                filmeEscolhido.seats.map(s => {
+                                seatInfos.seats.map(s => {
                                 
                           
                                 return <SeatItem key={s.id} color={color} border={border}>{s.name}</SeatItem>;
@@ -85,17 +90,18 @@ export default function SeatsPage({sessionLink ,filmId, filmes,sessionId}) {
 
             <FooterContainer>
                 <div>
-                    <img src={filmeEscolhido.movie.posterURL} alt={filmeEscolhido.movie.title} />
+                    <img src={seatInfos.movie.posterURL} alt={seatInfos.movie.title} />
                 </div>
                 <div>
-                    <p>{filmeEscolhido.movie.title}</p>
-                    <p>{filmeEscolhido.day.weekday} - {filmeEscolhido.name}</p>
+                    <p>{seatInfos.movie.title}</p>
+                    <p>{seatInfos.day.weekday} - {seatInfos.name}</p>
                 </div>
             </FooterContainer>
         
         </PageContainer>
     )
     
+    }
 }
 
 const PageContainer = styled.div`

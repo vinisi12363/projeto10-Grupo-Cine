@@ -13,7 +13,7 @@ export default function App() {
     const [sessionLink, setSessionLink]= useState("")
     const [seatsLink, setSeatsLink] = useState ("")
     const [sessionId, setSessionId] = useState("")
-    const [sessionInfos, setSessionInfos] = useState("")
+   
    
    
 
@@ -42,18 +42,17 @@ export default function App() {
                   seatsLink={seatsLink}
                   setSeatsLink= {setSeatsLink}
                   setSessionId= {setSessionId}
-                  setSessionInfos={setSessionInfos}
-                  sessionInfos={sessionInfos}
+                 
 
             />} />
 
 
-            <Route path="/assentos/:idFilm" element= {
+            <Route path="/assentos/:idFilme" element= {
                 <SeatsPage
                     sessionLink={sessionLink}
                     filmId ={filmId} 
                     filmes={filmes}
-                    sessionId= {sessionId}
+                   
     
                 /> 
              }/>

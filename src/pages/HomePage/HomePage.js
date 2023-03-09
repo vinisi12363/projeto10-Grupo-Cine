@@ -4,7 +4,6 @@ import axios from "axios"
 import { Link, useParams} from "react-router-dom"
 
 export default function HomePage({filmId, setFilmId, filmes, setFilmes,  sessionLink, setSessionLink, idFilm}) {
-   
  
     useEffect (() => {
         const require = axios.get("https://mock-api.driven.com.br/api/v8/cineflex/movies") 
@@ -12,7 +11,7 @@ export default function HomePage({filmId, setFilmId, filmes, setFilmes,  session
         require.then (res => {
           
             setFilmes (res.data)
-            console.log(filmes)
+          
 
         })
 

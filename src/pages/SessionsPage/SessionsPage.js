@@ -5,8 +5,9 @@ import axios from "axios"
 import { Link , useParams} from "react-router-dom"
 
 
-export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessionId, setSessionInfos, sessionInfos}) {
+export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessionId}) {
     const {idFilme} = useParams()
+    const [sessionInfos, setSessionInfos] = useState()
     useEffect (()=>{
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`
         const require = axios.get(url)  
@@ -15,6 +16,7 @@ export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessio
             require.then (res => {
                
                 setSessionInfos (res.data)   
+                console.log(sessionInfos)
                 
             })
     
@@ -23,59 +25,59 @@ export default function SessionsPage({filmId, seatsLink, setSeatsLink, setSessio
             })
        
     }, [])
- 
+    console.log(sessionInfos)
     if(sessionInfos === undefined){
         return <div>Carregando...</div>
     }
     function setarAssentos(id){
-        seatsLink = `/assentos/${id}`
-        setSeatsLink (seatsLink)
         setSessionId (id)
       
     }
+    if(sessionInfos !== undefined){
         return (
-            
-        <PageContainer>
-            Selecione o horário
-           
-            {
-                   sessionInfos.days.map(session => <SessionContainer key={session.id}> {
-                       <>
-                            <p>{session.weekday} - {session.date}</p>
+        
+            <PageContainer>
+                Selecione o horário
+                
+                    {
+                        sessionInfos.days.map(session => <SessionContainer key={session.id}> {
+                            <>
+                                <p>{session.weekday} - {session.date}</p>
+                                    
+                                    {session.showtimes.map(time => <ButtonsContainer>{
+                                    <>
+                                    <Link to={`/assentos/${time.id}`}>
+                                        <button onClick={()=>setarAssentos(time.id)}>{time.name}</button>
+                                    </Link>
+                            
+                                    </>
+    
+                                }  </ButtonsContainer> )}
+    
+                            </>
+    
+                        }</SessionContainer>)
+                    }     
+    
+                    
                                 
-                            {session.showtimes.map(time => <ButtonsContainer>{
-                                <>
-                                <Link to={`/assentos/${time.id}`}>
-                                  <button onClick={()=>setarAssentos(time.id)}>{time.name}</button>
-                                </Link>
-                              
-                                
-                                </>
-
-                            }  </ButtonsContainer> )}
-
-                       </>
-
-                    }</SessionContainer>)
-             }   
-
-              
-                         
-          
-              <FooterContainer>
-                <div>
-                    <img src={sessionInfos.posterURL} alt={sessionInfos.title} />
-                </div>
-                <div>
-                 <p>{sessionInfos.title}</p>
-                </div>
-            </FooterContainer>
-          
-
-          
-          
-        </PageContainer>
-    )
+                
+                    <FooterContainer>
+                    <div>
+                        <img src={sessionInfos.posterURL} alt={sessionInfos.title} />
+                    </div>
+                    <div>
+                        <p>{sessionInfos.title}</p>
+                    </div>
+                </FooterContainer>
+                
+    
+                
+                
+            </PageContainer>
+        )
+    }    
+    
 }
 
 const PageContainer = styled.div`
