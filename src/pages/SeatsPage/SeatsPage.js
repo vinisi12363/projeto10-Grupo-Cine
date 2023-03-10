@@ -173,7 +173,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                      key="nome" 
                      placeholder="Digite seu nome..." 
                      onChange={e=>setNome(e.target.value)} 
-
+                     required
                      />
 
                    <Title htmlFor="cpf">CPF do Comprador:</Title> 
@@ -184,7 +184,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                     key="cpf" 
                     placeholder="Digite seu CPF..." 
                     onChange={e=>setCPF(e.target.value)} 
-
+                    required
                     />
                    
                         <button data-test="book-seat-btn" onClick={() => setarReserva()} >Reservar Assento(s)</button>
