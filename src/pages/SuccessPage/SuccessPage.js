@@ -28,8 +28,8 @@ export default function SuccessPage({filmeSessao,userData, ingressos, setFilmeSe
            
             </TextContainer>
 
-            <TextContainer >
-                <div data-test="clients-info">
+            <TextContainer data-test="client-info" >
+                <div >
                     <strong><p>Comprador</p></strong>
                     <p>{`Nome: ${userData.name}`}</p>
                     <p>{`CPF: ${userData.cpf}`}</p>
