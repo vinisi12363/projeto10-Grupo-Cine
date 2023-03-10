@@ -25,7 +25,6 @@ export default function SessionsPage({setSessionId,filmeSessao, setFilmeSessao})
             })
        
     }, [])
-    console.log(sessionInfos)
     if(sessionInfos === undefined){
         return <div>Carregando...</div>
     }
@@ -36,10 +35,10 @@ export default function SessionsPage({setSessionId,filmeSessao, setFilmeSessao})
             data:date,
             hora:time
         })
-        console.log ("filmesSessao",filmeSessao)
+       
     }
 
-    console.log ("filmesSessao",filmeSessao)
+   
     if(sessionInfos !== undefined){
         return (
         

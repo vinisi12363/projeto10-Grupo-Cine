@@ -3,7 +3,6 @@ import styled from "styled-components"
 import axios from "axios"
 import { useParams, useNavigate } from "react-router-dom"
 import InputMask from 'react-input-mask';
-import InputStringMask from 'react-input-mask';
 import removeAccents from 'remove-accents';
 
 
@@ -89,7 +88,6 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
 
     
     const setarReserva = (e) => {
-        console.log("nome vale ",nome)
         const url = 'https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many'
         e.preventDefault()
         userReserve.ids = [...seatId]
@@ -185,7 +183,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                    <Title htmlFor="cpf">CPF do Comprador:</Title> 
                         
                     <InputMask
-                    mask="999.999.999-99" 
+                    mask="99999999999" 
                     id="cpf" 
                     data-test="client-cpf" 
                     type="text" 
