@@ -28,10 +28,13 @@ export default function SuccessPage({filmeSessao,userData, ingressos, setFilmeSe
            
             </TextContainer>
 
-            <TextContainer data-test="clients-info">
-                <strong><p>Comprador</p></strong>
-                <p>{`Nome: ${userData.name}`}</p>
-                <p>{`CPF: ${userData.cpf}`}</p>
+            <TextContainer >
+                <div data-test="clients-info">
+                    <strong><p>Comprador</p></strong>
+                    <p>{`Nome: ${userData.name}`}</p>
+                    <p>{`CPF: ${userData.cpf}`}</p>
+                </div>
+            
             </TextContainer>
             
                 <button  data-test="go-home-btn" onClick={()=>returnHome()}>Voltar para Home</button>
