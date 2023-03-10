@@ -60,7 +60,7 @@ export default function App() {
                 /> 
              }/>
            
-            <Route path="/sucess" element={<SuccessPage 
+            <Route path="/sucesso" element={<SuccessPage 
                  filmeSessao={filmeSessao}
                  userData={userData}
                  ingressos={ingressos}
