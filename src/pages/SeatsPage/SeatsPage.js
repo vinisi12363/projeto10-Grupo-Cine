@@ -183,7 +183,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                    <Title htmlFor="cpf">CPF do Comprador:</Title> 
                         
                     <InputMask
-                    mask="99999999999" 
+                    mask="999.999.999-99" 
                     id="cpf" 
                     data-test="client-cpf" 
                     type="text" 
