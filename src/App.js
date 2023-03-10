@@ -47,7 +47,7 @@ export default function App() {
             />} />
 
 
-            <Route path="/assentos/:idFilme" element= {
+            <Route path="/assentos/:idSessao" element= {
                 <SeatsPage
                    
                     filmId ={filmId} 
@@ -64,6 +64,9 @@ export default function App() {
                  filmeSessao={filmeSessao}
                  userData={userData}
                  ingressos={ingressos}
+                 setFilmeSessao={setFilmeSessao}
+                 setUserData ={setUserData}
+                 setIngressos = {setIngressos}
             />} />
 
             </Routes>

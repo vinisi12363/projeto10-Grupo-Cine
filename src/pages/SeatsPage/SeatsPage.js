@@ -70,7 +70,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
 
        
         if (!isAvailable){
-            alert("não é possivel selecionar um assento reservado")
+            alert("Esse assento não está disponível")
         }else{
             setIngressos([...ingressos, name]);
             const newSeats= seats.map((selection)=>{

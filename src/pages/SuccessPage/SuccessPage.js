@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom"
-export default function SuccessPage({filmeSessao,userData, ingressos}) {
+export default function SuccessPage({filmeSessao,userData, ingressos, setFilmeSessao, setUserData, setIngressos}) {
     const navigate = useNavigate()
-
+    function returnHome (){
+        setFilmeSessao ({nomeFilme:"", data:"", hora:""})
+        setIngressos([])
+        setUserData({ name:"", cpf:""})
+        navigate ("/")
+    }
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
@@ -28,9 +33,9 @@ export default function SuccessPage({filmeSessao,userData, ingressos}) {
                 <p>{`Nome: ${userData.name}`}</p>
                 <p>{`CPF: ${userData.cpf}`}</p>
             </TextContainer>
-            <Link data-test="go-home-btn"to="/">
-                <button>Voltar para Home</button>
-            </Link>
+            
+                <button  data-test="go-home-btn" onClick={()=>returnHome()}>Voltar para Home</button>
+         
             
         </PageContainer>
     )
