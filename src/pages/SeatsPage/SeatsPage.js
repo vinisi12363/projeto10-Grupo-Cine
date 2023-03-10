@@ -173,9 +173,10 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                      type="text" 
                      key="nome" 
                      placeholder="Digite seu nome..." 
+                     value={nome}
                      onChange={e=>{ 
-                          const valor = removeAccents(e.target.value.replace(/[0-9]/g, ''));
-                          setNome(valor)
+                         removeAccents(e.target.value.replace(/[0-9]/g, ''));
+                          setNome(e.target.value)
                         }} 
                      required
                      />
@@ -186,6 +187,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                     mask="999.999.999-99" 
                     id="cpf" 
                     data-test="client-cpf" 
+                    value={CPF}
                     type="text" 
                     key="cpf" 
                     placeholder="Digite seu CPF..." 
