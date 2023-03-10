@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import SessionsPage from "../SessionsPage/SessionsPage"
+
 
 
 export default function SeatsPage({ filmId, userData, setUserData, ingressos, setIngressos }) {
@@ -20,6 +21,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
         { color: "#FBE192", border: "#F7652B" },
         { color: "#1AAE9E", border: "#0E7D71" },
     ]
+    const navigate = useNavigate();
 
     let userReserve = {
         ids: [],
@@ -83,18 +85,10 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
     }
    
 
-    const handleInputChange = (event) => {
-        const value = event.target.value;
-        setNome(value);
-    };
 
-    const inputCpfChange = (event) => {
-        const value = event.target.value;
-        setCPF(value);
-    }
-
-
-    const setarReserva = () => {
+    const setarReserva = (e) => {
+        const url = 'https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many'
+        e.preventDefault()
         userReserve.ids = [...seatId]
         userReserve.name = nome
         userReserve.cpf = CPF
@@ -103,9 +97,13 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
             cpf: CPF
         })
 
-        axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many', userReserve)
-            .then(response => console.log(response))
-            .catch(error => console.error(error));
+        const promise = axios.post(url , userReserve)
+            promise.then(res => 
+                setCPF(""),
+                setNome(""),
+                navigate ("/sucess")
+            )
+            promise.catch(err=> alert(err.response.data.mensagem));
 
 
     };
@@ -134,12 +132,12 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                             return <SeatItem 
                             data-test="seat" 
                             key={s.id} 
-                            color={((s.selected && s.isAvailable) && "#1AAE9E" 
-                                || (!s.selected && s.isAvailable)&& "#C3CFD9"  
-                                || (!s.selected && !s.isAvailable) && "#FBE192")}
-                           border={((s.selected && s.isAvailable) && "#0E7D71"
-                                || (!s.selected && s.isAvailable)&& "#7B8B99"  
-                                || (!s.selected && !s.isAvailable) && "#F7652B")} 
+                            color={((s.selected && s.isAvailable) && "#1AAE9E")
+                                || ((!s.selected && s.isAvailable)&& "#C3CFD9")  
+                                || ((!s.selected && !s.isAvailable) && "#FBE192")}
+                           border={((s.selected && s.isAvailable) && "#0E7D71")
+                                || ((!s.selected && s.isAvailable)&& "#7B8B99") 
+                                || ((!s.selected && !s.isAvailable) && "#F7652B")} 
                             onClick={() => addSeat(s.id, s.name,s.isAvailable)}>
                             {s.name}
                             </SeatItem>;
@@ -166,15 +164,32 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                 </CaptionContainer>
 
                 <FormContainer>
-                    Nome do Comprador:
-                    <input data-test="client-name" type="text" key="nome" placeholder="Digite seu nome..." onChange={handleInputChange} />
+                 <form onSubmit={setarReserva}>
+                    <Title htmlFor="name">Nome do Comprador: </Title>
+                    <input 
+                     id="name"
+                     data-test="client-name" 
+                     type="text" 
+                     key="nome" 
+                     placeholder="Digite seu nome..." 
+                     onChange={e=>setNome(e.target.value)} 
 
-                    CPF do Comprador:
-                    <input data-test="client-cpf" type="text" key="cpf" placeholder="Digite seu CPF..." onChange={inputCpfChange} />
-                    <Link to="/sucess">
+                     />
+
+                   <Title htmlFor="cpf">CPF do Comprador:</Title> 
+                    <input 
+                    id="cpf" 
+                    data-test="client-cpf" 
+                    type="text" 
+                    key="cpf" 
+                    placeholder="Digite seu CPF..." 
+                    onChange={e=>setCPF(e.target.value)} 
+
+                    />
+                   
                         <button data-test="book-seat-btn" onClick={() => setarReserva()} >Reservar Assento(s)</button>
-                    </Link>
-
+                  
+                 </form>
                 </FormContainer>
 
                 <FooterContainer data-test="footer">
@@ -192,6 +207,10 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
 
     }
 }
+const Title = styled.label`
+     margin-bottom: 5px;
+    font-size: 22px;
+`
 
 const PageContainer = styled.div`
     display: flex;
