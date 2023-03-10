@@ -102,7 +102,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
             promise.then(res => 
                 setCPF(""),
                 setNome(""),
-                navigate ("/sucess")
+                navigate ("/sucesso")
             )
             promise.catch(err=> alert(err.response.data.mensagem));
 
