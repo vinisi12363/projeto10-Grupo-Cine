@@ -47,7 +47,7 @@ export default function App() {
             />} />
 
 
-            <Route path="/assentos/:idSessao" element= {
+            <Route path="/assentos/:idFilme" element= {
                 <SeatsPage
                    
                     filmId ={filmId} 
