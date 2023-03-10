@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import axios from "axios"
-import { Link, useParams, useNavigate } from "react-router-dom"
-import SessionsPage from "../SessionsPage/SessionsPage"
+import { useParams, useNavigate } from "react-router-dom"
+import InputMask from 'react-input-mask';
+import InputStringMask from 'react-input-mask';
+import removeAccents from 'remove-accents';
 
 
 
@@ -85,8 +87,9 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
     }
    
 
-
+    
     const setarReserva = (e) => {
+        console.log("nome vale ",nome)
         const url = 'https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many'
         e.preventDefault()
         userReserve.ids = [...seatId]
@@ -166,18 +169,23 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
                 <FormContainer>
                  <form onSubmit={setarReserva}>
                     <Title htmlFor="name">Nome do Comprador: </Title>
-                    <input 
+                    <input
                      id="name"
                      data-test="client-name" 
                      type="text" 
                      key="nome" 
                      placeholder="Digite seu nome..." 
-                     onChange={e=>setNome(e.target.value)} 
+                     onChange={e=>{ 
+                          const valor = removeAccents(e.target.value.replace(/[0-9]/g, ''));
+                          setNome(valor)
+                        }} 
                      required
                      />
 
                    <Title htmlFor="cpf">CPF do Comprador:</Title> 
-                    <input 
+                        
+                    <InputMask
+                    mask="999.999.999-99" 
                     id="cpf" 
                     data-test="client-cpf" 
                     type="text" 
@@ -244,6 +252,12 @@ const FormContainer = styled.div`
         align-self: center;
     }
     input {
+        width: calc(100vw - 60px);
+    }
+    InputMask{
+        width: calc(100vw - 60px);
+    }
+    InputStringMask{
         width: calc(100vw - 60px);
     }
 `
