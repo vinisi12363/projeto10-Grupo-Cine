@@ -22,7 +22,8 @@ export default function HomePage({
     });
 
     require.catch((err) => {
-      console.log(err.response.data.error);
+      alert("Ocorreu um erro ao carregar os filmes, recarregue a página ou tente mais tarde")
+
     });
   }, []);
 

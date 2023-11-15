@@ -16,12 +16,12 @@ export default function SessionsPage({setSessionId,filmeSessao, setFilmeSessao})
             require.then (res => {
                
                 setSessionInfos (res.data)   
-                console.log(sessionInfos)
                 
             })
     
             require.catch (err => {
-                console.log (err.response.data.error)
+                alert("Ocorreu um erro ao carregar as sessões, recarregue a página ou tente mais tarde")
+
             })
        
     }, [])

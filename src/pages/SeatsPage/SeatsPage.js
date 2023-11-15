@@ -37,7 +37,7 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
         if (filmId !== undefined) {
             require.then(res => {
                 setaSeatInfos(res.data)
-                console.log(res.data)
+               
                 setSeats(
                     res.data.seats.map(({ id, name, isAvailable }) => {
                         return { id, name, isAvailable, selected: false }
@@ -48,7 +48,8 @@ export default function SeatsPage({ filmId, userData, setUserData, ingressos, se
             })  
 
             require.catch(err => {
-                console.log(err.response.data.error)
+                alert("Ocorreu um erro ao carregar as sessões, recarregue a página ou tente mais tarde")
+
             })
 
 
