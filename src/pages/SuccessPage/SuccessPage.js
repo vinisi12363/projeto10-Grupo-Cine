@@ -11,7 +11,7 @@ export default function SuccessPage({filmeSessao,userData, ingressos, setFilmeSe
     }
     return (
         <PageContainer>
-            <h1>Pedido feito <br /> com sucesso!</h1>
+            <h1>Reserva realizada <br /> com sucesso!</h1>
 
             <TextContainer data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>

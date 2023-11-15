@@ -19,9 +19,11 @@ export default function App() {
 
     return (
         <BrowserRouter>
-          <Link to="/">
-          <NavContainer>CINEFLEX</NavContainer>
-          </Link>
+        <Link to="/">
+            <NavContainer>   
+                <Logo src="https://www.grupocine.com.br/imgs/logo-grupo-cine-1.webp"></Logo>
+            </NavContainer>
+        </Link>
         
           
             <Routes>
@@ -82,13 +84,22 @@ const NavContainer = styled.div`
     align-items: center;
     justify-content: center;
     background-color: #C3CFD9;
-    color: #E8833A;
-    font-family: 'Roboto', sans-serif;
-    font-size: 34px;
     position: fixed;
     top: 0;
     a {
         text-decoration: none;
         color: #E8833A;
     }
+    img{
+        width: 200px;
+        height: 50px;
+    
+    }
 `
+
+const Logo = styled.img`
+  box-sizing: border-box;
+  background-size:cover;
+  height: auto;
+  width: auto;
+`;
